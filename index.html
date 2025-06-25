@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>Banco                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Gchu</h1>
+            <h1>Banco Gchu</h1>
             <div class="account-info">
                 <p id="titular"></p>
                 <p id="numero-cuenta"></p>
@@ -21,29 +21,32 @@
             <div class="operations">
                 <h2>Operaciones</h2>
                 <div class="operation-buttons">
-                    <button id="depositar-btn" class="btn">Depositar</button>
-                    <button id="retirar-btn" class="btn">Retirar</button>
-                    <button id="movimientos-btn" class="btn">Ver Movimientos</button>
-                    <button id="prestamos-btn" class="btn">Solicitar Préstamo</button>
+                    <a href="#deposito-container" class="btn">Depositar</a>
+                    <a href="#retiro-container" class="btn">Retirar</a>
+                    <a href="#movimientos-container" class="btn">Ver Movimientos</a>
+                    <a href="#prestamo-container" class="btn">Solicitar Préstamo</a>
                 </div>
             </div>
 
-            <div class="operation-form" id="operation-form" style="display: none;">
-                <h3 id="form-title"></h3>
-                <input type="number" id="cantidad-input" placeholder="Ingrese cantidad">
-                <button id="confirmar-btn" class="btn">Confirmar</button>
-                <button id="cancelar-btn" class="btn secondary">Cancelar</button>
+            <div class="operation-form" id="deposito-container">
+                <h3>Depositar Dinero</h3>
+                <input type="number" id="deposito-cantidad" placeholder="Ingrese cantidad">
+                <button id="confirmar-deposito-btn" class="btn">Confirmar Depósito</button>
             </div>
 
-            <div class="movimientos-container" id="movimientos-container" style="display: none;">
+            <div class="operation-form" id="retiro-container">
+                <h3>Retirar Dinero</h3>
+                <input type="number" id="retiro-cantidad" placeholder="Ingrese cantidad">
+                <button id="confirmar-retiro-btn" class="btn">Confirmar Retiro</button>
+            </div>
+
+            <div class="movimientos-container" id="movimientos-container">
                 <h3>Historial de Movimientos</h3>
-                <button id="cerrar-movimientos-btn" class="btn secondary">Cerrar</button>
                 <div id="movimientos-list"></div>
             </div>
 
-            <div class="prestamo-container" id="prestamo-container" style="display: none;">
+            <div class="prestamo-container" id="prestamo-container">
                 <h3>Solicitud de Préstamo</h3>
-                <button id="cerrar-prestamo-btn" class="btn secondary">Cerrar</button>
                 
                 <div class="prestamo-form">
                     <div class="form-group">
@@ -69,7 +72,7 @@
                     
                     <button id="simular-prestamo-btn" class="btn">Simular Préstamo</button>
                     
-                    <div class="simulacion-resultados" id="simulacion-resultados" style="display: none;">
+                    <div class="simulacion-resultados" id="simulacion-resultados">
                         <h4>Resultado de la Simulación</h4>
                         <p><strong>Monto solicitado:</strong> $<span id="sim-monto"></span></p>
                         <p><strong>Plazo:</strong> <span id="sim-cuotas"></span> meses</p>

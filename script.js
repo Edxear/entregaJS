@@ -128,30 +128,31 @@ class CuentaBancaria {
 class InterfazBancaria {
   constructor(cuenta) {
     this.cuenta = cuenta;
-    this.currentOperation = null;
     this.initElements();
     this.initEventListeners();
     this.updateAccountInfo();
+    this.mostrarMovimientos(); // Mostrar movimientos al cargar
   }
 
   initElements() {
     this.titularElement = document.getElementById('titular');
     this.numeroCuentaElement = document.getElementById('numero-cuenta');
     this.saldoElement = document.getElementById('saldo');
-    this.depositarBtn = document.getElementById('depositar-btn');
-    this.retirarBtn = document.getElementById('retirar-btn');
-    this.movimientosBtn = document.getElementById('movimientos-btn');
-    this.prestamosBtn = document.getElementById('prestamos-btn');
-    this.operationForm = document.getElementById('operation-form');
-    this.formTitle = document.getElementById('form-title');
-    this.cantidadInput = document.getElementById('cantidad-input');
-    this.confirmarBtn = document.getElementById('confirmar-btn');
-    this.cancelarBtn = document.getElementById('cancelar-btn');
+    
+    
+    this.depositoContainer = document.getElementById('deposito-container');
+    this.retiroContainer = document.getElementById('retiro-container');
+    this.depositoCantidad = document.getElementById('deposito-cantidad');
+    this.retiroCantidad = document.getElementById('retiro-cantidad');
+    this.confirmarDepositoBtn = document.getElementById('confirmar-deposito-btn');
+    this.confirmarRetiroBtn = document.getElementById('confirmar-retiro-btn');
+    
+    
     this.movimientosContainer = document.getElementById('movimientos-container');
     this.movimientosList = document.getElementById('movimientos-list');
-    this.cerrarMovimientosBtn = document.getElementById('cerrar-movimientos-btn');
+    
+    
     this.prestamoContainer = document.getElementById('prestamo-container');
-    this.cerrarPrestamoBtn = document.getElementById('cerrar-prestamo-btn');
     this.montoPrestamoInput = document.getElementById('monto-prestamo');
     this.cuotasPrestamoSelect = document.getElementById('cuotas-prestamo');
     this.tasaInteresInput = document.getElementById('tasa-interes');
@@ -166,18 +167,17 @@ class InterfazBancaria {
     this.nombreSolicitanteInput = document.getElementById('nombre-solicitante');
     this.ingresosMensualesInput = document.getElementById('ingresos-mensuales');
     this.solicitarPrestamoBtn = document.getElementById('solicitar-prestamo-btn');
+    
+    
     this.messagesContainer = document.getElementById('messages');
   }
 
   initEventListeners() {
-    this.depositarBtn.addEventListener('click', () => this.showOperationForm('depositar'));
-    this.retirarBtn.addEventListener('click', () => this.showOperationForm('retirar'));
-    this.movimientosBtn.addEventListener('click', () => this.showMovimientos());
-    this.prestamosBtn.addEventListener('click', () => this.showPrestamoForm());
-    this.confirmarBtn.addEventListener('click', () => this.confirmOperation());
-    this.cancelarBtn.addEventListener('click', () => this.hideOperationForm());
-    this.cerrarMovimientosBtn.addEventListener('click', () => this.hideMovimientos());
-    this.cerrarPrestamoBtn.addEventListener('click', () => this.hidePrestamoForm());
+    
+    this.confirmarDepositoBtn.addEventListener('click', () => this.confirmarDeposito());
+    this.confirmarRetiroBtn.addEventListener('click', () => this.confirmarRetiro());
+    
+    
     this.simularPrestamoBtn.addEventListener('click', () => this.simularPrestamo());
     this.solicitarPrestamoBtn.addEventListener('click', () => this.solicitarPrestamo());
   }
@@ -188,39 +188,33 @@ class InterfazBancaria {
     this.saldoElement.textContent = `Saldo: $${this.cuenta.saldo.toLocaleString()}`;
   }
 
-  showOperationForm(operation) {
-    this.currentOperation = operation;
-    this.operationForm.style.display = 'block';
-    this.formTitle.textContent = operation === 'depositar' ? 'Depositar Dinero' : 'Retirar Dinero';
-    this.cantidadInput.value = '';
-    this.cantidadInput.focus();
-  }
-
-  hideOperationForm() {
-    this.operationForm.style.display = 'none';
-    this.currentOperation = null;
-  }
-
-  confirmOperation() {
+  confirmarDeposito() {
     try {
-      const cantidad = parseFloat(this.cantidadInput.value);
-      
-      if (this.currentOperation === 'depositar') {
-        this.cuenta.depositar(cantidad);
-        this.showMessage(`Depositaste $${cantidad.toLocaleString()}`, 'success');
-      } else {
-        this.cuenta.retirar(cantidad);
-        this.showMessage(`Retiraste $${cantidad.toLocaleString()}`, 'success');
-      }
-      
+      const cantidad = parseFloat(this.depositoCantidad.value);
+      this.cuenta.depositar(cantidad);
+      this.showMessage(`Depositaste $${cantidad.toLocaleString()}`, 'success');
       this.updateAccountInfo();
-      this.hideOperationForm();
+      this.depositoCantidad.value = '';
+      this.mostrarMovimientos();
     } catch (error) {
       this.showMessage(`Error: ${error.message}`, 'error');
     }
   }
 
-  showMovimientos() {
+  confirmarRetiro() {
+    try {
+      const cantidad = parseFloat(this.retiroCantidad.value);
+      this.cuenta.retirar(cantidad);
+      this.showMessage(`Retiraste $${cantidad.toLocaleString()}`, 'success');
+      this.updateAccountInfo();
+      this.retiroCantidad.value = '';
+      this.mostrarMovimientos();
+    } catch (error) {
+      this.showMessage(`Error: ${error.message}`, 'error');
+    }
+  }
+
+  mostrarMovimientos() {
     const movimientos = this.cuenta.obtenerMovimientos();
     this.movimientosList.innerHTML = '';
     
@@ -238,25 +232,6 @@ class InterfazBancaria {
         this.movimientosList.appendChild(movimientoElement);
       });
     }
-    
-    this.movimientosContainer.style.display = 'block';
-  }
-
-  hideMovimientos() {
-    this.movimientosContainer.style.display = 'none';
-  }
-
-  showPrestamoForm() {
-    this.prestamoContainer.style.display = 'block';
-    this.simulacionResultados.style.display = 'none';
-    this.montoPrestamoInput.value = '';
-    this.nombreSolicitanteInput.value = '';
-    this.ingresosMensualesInput.value = '';
-    this.tasaInteresInput.value = '15';
-  }
-
-  hidePrestamoForm() {
-    this.prestamoContainer.style.display = 'none';
   }
 
   simularPrestamo() {
@@ -318,8 +293,15 @@ class InterfazBancaria {
       if (prestamo.aprobar()) {
         this.cuenta.solicitarPrestamo(prestamo);
         this.updateAccountInfo();
-        this.hidePrestamoForm();
         this.showMessage(`¡Préstamo aprobado por $${monto.toLocaleString()}! El monto ha sido depositado en tu cuenta.`, 'success');
+        this.mostrarMovimientos();
+        
+        
+        this.montoPrestamoInput.value = '';
+        this.nombreSolicitanteInput.value = '';
+        this.ingresosMensualesInput.value = '';
+        this.tasaInteresInput.value = '15';
+        this.simulacionResultados.style.display = 'none';
       } else {
         this.showMessage("Lo sentimos, tu solicitud de préstamo no ha sido aprobada. Tus ingresos no cumplen con los requisitos.", 'error');
       }
@@ -352,4 +334,3 @@ function iniciarAplicacion() {
 }
 
 document.addEventListener('DOMContentLoaded', iniciarAplicacion);
-
