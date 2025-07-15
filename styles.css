@@ -9,6 +9,7 @@ body {
     background-color: #f5f5f5;
     color: #333;
     line-height: 1.6;
+    padding-bottom: 20px;
 }
 
 .container {
@@ -28,6 +29,7 @@ body {
 
 .header h1 {
     margin-bottom: 10px;
+    font-size: 1.8rem;
 }
 
 .account-info {
@@ -39,6 +41,7 @@ body {
 
 .account-info p {
     margin: 5px 0;
+    font-size: 1rem;
 }
 
 .main-content {
@@ -55,6 +58,9 @@ body {
 .operations h2 {
     margin-bottom: 15px;
     color: #030303;
+    font-size: 1.4rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
 }
 
 .operation-buttons {
@@ -71,14 +77,18 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    font-size: 0.9rem;
+    min-width: 120px;
 }
 
 .btn:hover {
     background-color: #e46815;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .operation-form {
@@ -87,11 +97,13 @@ body {
     border-radius: 8px;
     margin-bottom: 20px;
     display: block;
+    transition: all 0.3s ease;
 }
 
 .operation-form h3 {
     margin-bottom: 15px;
     color: #090b0c;
+    font-size: 1.2rem;
 }
 
 .operation-form input {
@@ -100,6 +112,14 @@ body {
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+.operation-form input:focus {
+    border-color: #e46815;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(228, 104, 21, 0.2);
 }
 
 .movimientos-container {
@@ -113,17 +133,26 @@ body {
 .movimientos-container h3 {
     margin-bottom: 15px;
     color: #090b0c;
+    font-size: 1.2rem;
 }
 
 #movimientos-list {
     margin-top: 15px;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .movimiento {
-    padding: 10px;
+    padding: 12px 15px;
     border-bottom: 1px solid #ddd;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.movimiento:hover {
+    background-color: rgba(0, 0, 0, 0.02);
 }
 
 .movimiento:last-child {
@@ -138,6 +167,19 @@ body {
     color: #dc3545;
 }
 
+.movimiento span {
+    flex: 1;
+    text-align: left;
+    margin-right: 10px;
+}
+
+.movimiento span:last-child {
+    text-align: right;
+    color: #666;
+    font-size: 0.85rem;
+    flex: 0 0 180px;
+}
+
 .prestamo-container {
     padding: 20px;
     background-color: #f8f9fa;
@@ -149,6 +191,7 @@ body {
 .prestamo-container h3 {
     margin-bottom: 15px;
     color: #090b0c;
+    font-size: 1.2rem;
 }
 
 .prestamo-form {
@@ -163,6 +206,7 @@ body {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    font-size: 0.95rem;
 }
 
 .form-group input,
@@ -171,6 +215,14 @@ body {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #e46815;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(228, 104, 21, 0.2);
 }
 
 .simulacion-resultados {
@@ -178,42 +230,107 @@ body {
     padding: 15px;
     background-color: #e9ecef;
     border-radius: 5px;
+    display: none;
 }
 
 .simulacion-resultados h4 {
     margin-bottom: 15px;
     color: #090b0c;
+    font-size: 1.1rem;
 }
 
-.messages {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    max-width: 300px;
+.simulacion-resultados p {
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-between;
 }
 
-.message {
-    padding: 15px;
-    margin-bottom: 10px;
+.simulacion-resultados p span:first-child {
+    font-weight: bold;
+}
+
+/* Estilos para Toastify */
+.toastify {
+    padding: 12px 20px;
     border-radius: 5px;
-    color: white;
-    animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;
+    font-weight: 500;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    display: flex;
+    align-items: center;
 }
 
-.message.success {
-    background-color: #28a745;
+.toastify-success {
+    background: #28a745;
 }
 
-.message.error {
-    background-color: #dc3545;
+.toastify-error {
+    background: #dc3545;
 }
 
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+.toastify-warning {
+    background: #ffc107;
+    color: #212529;
 }
 
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+.toastify-info {
+    background: #17a2b8;
+}
+
+.toastify-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .header {
+        padding: 15px;
+    }
+    
+    .operation-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .movimiento {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .movimiento span {
+        margin-bottom: 5px;
+    }
+    
+    .movimiento span:last-child {
+        text-align: left;
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .account-info p {
+        font-size: 0.9rem;
+    }
+    
+    .operation-form,
+    .movimientos-container,
+    .prestamo-container {
+        padding: 15px;
+    }
+    
+    .toastify {
+        width: 90%;
+        margin: 0 auto;
+    }
 }

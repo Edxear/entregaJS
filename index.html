@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador Bancario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <header class="header">
@@ -47,13 +51,13 @@
 
             <div class="prestamo-container" id="prestamo-container">
                 <h3>Solicitud de Préstamo</h3>
-                
+
                 <div class="prestamo-form">
                     <div class="form-group">
                         <label for="monto-prestamo">Monto solicitado:</label>
                         <input type="number" id="monto-prestamo" placeholder="Ej: 100000">
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="cuotas-prestamo">Cuotas:</label>
                         <select id="cuotas-prestamo">
@@ -63,15 +67,15 @@
                             <option value="24">24 meses</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="tasa-interes">Tasa de interés anual:</label>
                         <input type="number" id="tasa-interes" value="15" step="0.1">
                         <span>%</span>
                     </div>
-                    
+
                     <button id="simular-prestamo-btn" class="btn">Simular Préstamo</button>
-                    
+
                     <div class="simulacion-resultados" id="simulacion-resultados">
                         <h4>Resultado de la Simulación</h4>
                         <p><strong>Monto solicitado:</strong> $<span id="sim-monto"></span></p>
@@ -80,17 +84,17 @@
                         <p><strong>Interés total:</strong> $<span id="sim-interes"></span></p>
                         <p><strong>Total a pagar:</strong> $<span id="sim-total"></span></p>
                         <p><strong>Cuota mensual:</strong> $<span id="sim-cuota"></span></p>
-                        
+
                         <div class="form-group">
                             <label for="nombre-solicitante">Nombre completo:</label>
                             <input type="text" id="nombre-solicitante" placeholder="Ej: Juan Pérez">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="ingresos-mensuales">Ingresos mensuales:</label>
                             <input type="number" id="ingresos-mensuales" placeholder="Ej: 500000">
                         </div>
-                        
+
                         <button id="solicitar-prestamo-btn" class="btn">Solicitar Préstamo</button>
                     </div>
                 </div>
@@ -99,7 +103,9 @@
 
         <div class="messages" id="messages"></div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
