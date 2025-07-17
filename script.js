@@ -182,7 +182,7 @@ class InterfazBancaria {
     updateAccountInfo() {
         this.titularElement.textContent = `Titular: ${this.cuenta.titular}`;
         this.numeroCuentaElement.textContent = `N° Cuenta: ${this.cuenta.numeroCuenta}`;
-        this.saldoElement.textContent = `Saldo: $${this.cuenta.saldo.toLocaleString()}`;
+        this.saldoElement.textContent = `Saldo: $${this.cuenta.saldo.toLocaleString('es-AR')}`;
     }
 
     showToast(message, type = 'info') {
@@ -203,8 +203,10 @@ class InterfazBancaria {
             style: {
                 background: background,
                 color: type === 'warning' ? '#212529' : 'white',
-                'box-shadow': '0 3px 6px rgba(0, 0, 0, 0.16)',
-                'border-radius': '5px'
+                'box-shadow': '0 4px 12px rgba(0, 0, 0, 0.15)',
+                'border-radius': '5px',
+                'font-family': "'Arial', sans-serif",
+                'font-size': '0.95rem'
             },
             className: `toastify-${type}`
         }).showToast();
@@ -225,18 +227,31 @@ class InterfazBancaria {
 
             const result = await Swal.fire({
                 title: "¿Confirmar depósito?",
-                html: `Estás a punto de depositar <strong>$${cantidad.toLocaleString()}</strong>`,
+                html: `Estás a punto de depositar <strong>$${cantidad.toLocaleString('es-AR')}</strong>`,
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Confirmar",
                 cancelButtonText: "Cancelar",
                 confirmButtonColor: "#020609",
-                cancelButtonColor: "#6c757d"
+                cancelButtonColor: "#6c757d",
+                background: '#ffffff',
+                backdrop: `
+                    rgba(0,0,0,0.5)
+                    url("/images/nyan-cat.gif")
+                    left top
+                    no-repeat
+                `,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
             });
 
             if (result.isConfirmed) {
                 this.cuenta.depositar(cantidad);
-                this.showToast(`Depositaste $${cantidad.toLocaleString()}`, "success");
+                this.showToast(`Depositaste $${cantidad.toLocaleString('es-AR')}`, "success");
                 this.updateAccountInfo();
                 this.depositoCantidad.value = '';
                 this.mostrarMovimientos();
@@ -261,18 +276,19 @@ class InterfazBancaria {
 
             const result = await Swal.fire({
                 title: "¿Confirmar retiro?",
-                html: `Estás a punto de retirar <strong>$${cantidad.toLocaleString()}</strong>`,
+                html: `Estás a punto de retirar <strong>$${cantidad.toLocaleString('es-AR')}</strong>`,
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Confirmar",
                 cancelButtonText: "Cancelar",
                 confirmButtonColor: "#020609",
-                cancelButtonColor: "#6c757d"
+                cancelButtonColor: "#6c757d",
+                background: '#ffffff'
             });
 
             if (result.isConfirmed) {
                 this.cuenta.retirar(cantidad);
-                this.showToast(`Retiraste $${cantidad.toLocaleString()}`, "success");
+                this.showToast(`Retiraste $${cantidad.toLocaleString('es-AR')}`, "success");
                 this.updateAccountInfo();
                 this.retiroCantidad.value = '';
                 this.mostrarMovimientos();
@@ -294,8 +310,8 @@ class InterfazBancaria {
                 movimientoElement.className = `movimiento ${mov.tipo.toLowerCase()}`;
                 movimientoElement.innerHTML = `
                     <span>${index + 1}. ${mov.tipo}</span>
-                    <span>$${mov.cantidad.toLocaleString()}</span>
-                    <span>${mov.fecha.toLocaleString()}</span>
+                    <span>$${mov.cantidad.toLocaleString('es-AR')}</span>
+                    <span>${mov.fecha.toLocaleString('es-AR')}</span>
                 `;
                 this.movimientosList.appendChild(movimientoElement);
             });
@@ -326,7 +342,7 @@ class InterfazBancaria {
             const prestamo = new Prestamo(monto, cuotas, tasaInteres, '', 0);
             const simulacion = prestamo.simular();
 
-            this.simMonto.textContent = simulacion.monto.toLocaleString();
+            this.simMonto.textContent = simulacion.monto.toLocaleString('es-AR');
             this.simCuotas.textContent = simulacion.cuotas;
             this.simTasa.textContent = simulacion.tasaInteres.toFixed(2);
             this.simInteres.textContent = simulacion.interesTotal.toFixed(2);
@@ -334,6 +350,7 @@ class InterfazBancaria {
             this.simCuota.textContent = simulacion.cuotaMensual.toFixed(2);
 
             this.simulacionResultados.style.display = 'block';
+            this.simulacionResultados.scrollIntoView({ behavior: 'smooth' });
         } catch (error) {
             this.showToast(error.message, "error");
         }
@@ -386,20 +403,45 @@ class InterfazBancaria {
 
             const result = await Swal.fire({
                 title: "¿Solicitar préstamo?",
-                html: `Estás a punto de solicitar un préstamo por <strong>$${monto.toLocaleString()}</strong> a <strong>${cuotas} cuotas</strong>`,
+                html: `
+                    <div style="text-align: left;">
+                        <p>Estás a punto de solicitar un préstamo con los siguientes detalles:</p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li><strong>Monto:</strong> $${monto.toLocaleString('es-AR')}</li>
+                            <li><strong>Plazo:</strong> ${cuotas} meses</li>
+                            <li><strong>Tasa anual:</strong> ${tasaInteres}%</li>
+                            <li><strong>Cuota estimada:</strong> $${(prestamo.simular().cuotaMensual).toFixed(2)}</li>
+                        </ul>
+                    </div>
+                `,
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Solicitar",
                 cancelButtonText: "Cancelar",
                 confirmButtonColor: "#020609",
-                cancelButtonColor: "#6c757d"
+                cancelButtonColor: "#6c757d",
+                background: '#ffffff',
+                width: '600px'
             });
 
             if (result.isConfirmed) {
                 if (prestamo.aprobar()) {
                     this.cuenta.solicitarPrestamo(prestamo);
                     this.updateAccountInfo();
-                    this.showToast(`¡Préstamo aprobado por $${monto.toLocaleString()}!`, "success");
+                    
+                    await Swal.fire({
+                        title: "¡Préstamo aprobado!",
+                        html: `
+                            <div style="text-align: center;">
+                                <p style="font-size: 1.2rem; margin-bottom: 20px;">El préstamo por <strong>$${monto.toLocaleString('es-AR')}</strong> ha sido aprobado.</p>
+                                <p>El monto ha sido depositado en tu cuenta.</p>
+                            </div>
+                        `,
+                        icon: "success",
+                        confirmButtonColor: "#28a745",
+                        background: '#ffffff'
+                    });
+                    
                     this.mostrarMovimientos();
 
                     this.montoPrestamoInput.value = '';
@@ -411,8 +453,15 @@ class InterfazBancaria {
                     await Swal.fire({
                         icon: "error",
                         title: "Préstamo no aprobado",
-                        html: "Lo sentimos, tu solicitud de préstamo no ha sido aprobada.<br><br>Tus ingresos no cumplen con los requisitos mínimos.",
-                        confirmButtonColor: "#020609"
+                        html: `
+                            <div style="text-align: left;">
+                                <p>Lo sentimos, tu solicitud de préstamo no ha sido aprobada.</p>
+                                <p style="margin-top: 10px;">Razón: <strong>Tus ingresos no cumplen con los requisitos mínimos</strong>.</p>
+                                <p style="margin-top: 10px;">Para aprobar este préstamo necesitarías ingresos mensuales de al menos <strong>$${(prestamo.simular().cuotaMensual * 3).toFixed(2)}</strong>.</p>
+                            </div>
+                        `,
+                        confirmButtonColor: "#dc3545",
+                        background: '#ffffff'
                     });
                 }
             }
@@ -423,6 +472,12 @@ class InterfazBancaria {
 }
 
 function iniciarAplicacion() {
+    
+    particlesJS.load('particles-js', 'particlesjs-config.json', function() {
+        console.log('Particles.js config loaded');
+    });
+
+    
     let cuenta = CuentaBancaria.cargarDesdeLocalStorage();
 
     if (!cuenta) {
