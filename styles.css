@@ -105,8 +105,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* nuevo */
-
 .btn-toggle {
     background-color: #495057;
     margin-bottom: 15px;
@@ -132,14 +130,11 @@ body {
     opacity: 0.5;
 }
 
-/* Estilo para datos ocultos */
 .hidden-data {
     filter: blur(5px);
     user-select: none;
     pointer-events: none;
 }
-
-/* termina nuevo */
 
 .operation-form {
     padding: 25px;
