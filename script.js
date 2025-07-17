@@ -50,6 +50,27 @@ class CuentaBancaria {
         this.prestamos = [];
     }
 
+    static async cargarDesdeJSON() {
+        try {
+            const response = await fetch('cuentas.json');
+            if (!response.ok) throw new Error('Error al cargar datos');
+            const data = await response.json();
+
+            return data.cuentas.map(c => new CuentaBancaria(
+                c.numeroCuenta,
+                c.titular,
+                c.saldo,
+                c.movimientos,
+                c.prestamos
+            ));
+        } catch (error) {
+            console.log('Error:', error);
+
+            return [new CuentaBancaria("184546784-7", "Exequiel Dearmas", 10000000)];
+        }
+    }
+
+
     depositar(cantidad) {
         if (isNaN(cantidad)) {
             throw new Error("Por favor ingrese una cantidad válida");
@@ -170,7 +191,7 @@ class InterfazBancaria {
         this.ingresosMensualesInput = document.getElementById('ingresos-mensuales');
         this.solicitarPrestamoBtn = document.getElementById('solicitar-prestamo-btn');
         this.toggleDataBtn = document.getElementById('toggle-data-btn');
-this.isDataHidden = false;
+        this.isDataHidden = false;
     }
 
     initEventListeners() {
@@ -189,25 +210,25 @@ this.isDataHidden = false;
     }
 
     toggleAccountData() {
-    this.isDataHidden = !this.isDataHidden;
-    
-    const accountInfo = document.querySelector('.account-info');
-    const eyeIcon = this.toggleDataBtn.querySelector('.eye-icon');
-    
-    if (this.isDataHidden) {
-        accountInfo.classList.add('hidden');
-        this.toggleDataBtn.innerHTML = '<span class="eye-icon">👁️</span> Mostrar Datos';
-        
-       
-        localStorage.setItem('hideAccountData', 'true');
-    } else {
-        accountInfo.classList.remove('hidden');
-        this.toggleDataBtn.innerHTML = '<span class="eye-icon">👁️</span> Ocultar Datos';
-        
-       
-        localStorage.setItem('hideAccountData', 'false');
+        this.isDataHidden = !this.isDataHidden;
+
+        const accountInfo = document.querySelector('.account-info');
+        const eyeIcon = this.toggleDataBtn.querySelector('.eye-icon');
+
+        if (this.isDataHidden) {
+            accountInfo.classList.add('hidden');
+            this.toggleDataBtn.innerHTML = '<span class="eye-icon">👁️</span> Mostrar Datos';
+
+
+            localStorage.setItem('hideAccountData', 'true');
+        } else {
+            accountInfo.classList.remove('hidden');
+            this.toggleDataBtn.innerHTML = '<span class="eye-icon">👁️</span> Ocultar Datos';
+
+
+            localStorage.setItem('hideAccountData', 'false');
+        }
     }
-}
 
     showToast(message, type = 'info') {
         const background = {
@@ -452,7 +473,7 @@ this.isDataHidden = false;
                 if (prestamo.aprobar()) {
                     this.cuenta.solicitarPrestamo(prestamo);
                     this.updateAccountInfo();
-                    
+
                     await Swal.fire({
                         title: "¡Préstamo aprobado!",
                         html: `
@@ -465,7 +486,7 @@ this.isDataHidden = false;
                         confirmButtonColor: "#28a745",
                         background: '#ffffff'
                     });
-                    
+
                     this.mostrarMovimientos();
 
                     this.montoPrestamoInput.value = '';
@@ -495,25 +516,39 @@ this.isDataHidden = false;
     }
 }
 
-function iniciarAplicacion() {
-    particlesJS.load('particles-js', 'particlesjs-config.json', function() {
-        console.log('Particles.js config loaded');
-    });
+async function iniciarAplicacion() {
 
-    let cuenta = CuentaBancaria.cargarDesdeLocalStorage();
+    const cuentas = await CuentaBancaria.cargarDesdeJSON();
 
-    if (!cuenta) {
-        cuenta = new CuentaBancaria("184546784-7", "Exequiel Dearmas", 10000000);
-        cuenta.guardarEnLocalStorage();
-    }
 
-    const interfaz = new InterfazBancaria(cuenta);
-    
+    const cuenta = cuentas[0];
 
-    const hideData = localStorage.getItem('hideAccountData') === 'true';
-    if (hideData) {
-        interfaz.toggleAccountData(); 
-    }
+
+    new InterfazBancaria(cuenta);
+
+
+    particlesJS.load('particles-js', 'particlesjs-config.json');
 }
+
+// function iniciarAplicacion() {
+//     particlesJS.load('particles-js', 'particlesjs-config.json', function () {
+//         console.log('Particles.js config loaded');
+//     });
+
+//     let cuenta = CuentaBancaria.cargarDesdeLocalStorage();
+
+//     if (!cuenta) {
+//         cuenta = new CuentaBancaria("184546784-7", "Exequiel Dearmas", 10000000);
+//         cuenta.guardarEnLocalStorage();
+//     }
+
+//     const interfaz = new InterfazBancaria(cuenta);
+
+
+//     const hideData = localStorage.getItem('hideAccountData') === 'true';
+//     if (hideData) {
+//         interfaz.toggleAccountData();
+//     }
+// }
 
 document.addEventListener('DOMContentLoaded', iniciarAplicacion);

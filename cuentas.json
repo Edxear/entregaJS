@@ -1,0 +1,83 @@
+{
+  "cuentas": [
+    {
+      "id": 1,
+      "numeroCuenta": "184546784-7",
+      "titular": "Exequiel Dearmas",
+      "saldo": 10000000,
+      "movimientos": [],
+      "prestamos": []
+    },
+    {
+      "id": 2,
+      "numeroCuenta": "245678901-2",
+      "titular": "María González",
+      "saldo": 5000000,
+      "movimientos": [
+        {
+          "tipo": "Depósito",
+          "cantidad": 2000000,
+          "fecha": "2023-05-15 H/M/S 12:00:00"
+        }
+      ],
+      "prestamos": []
+    },
+    {
+      "id": 3,
+      "numeroCuenta": "345678912-3",
+      "titular": "Carlos Rodríguez",
+      "saldo": 2500000,
+      "movimientos": [],
+      "prestamos": [
+        {
+          "monto": 1000000,
+          "cuotas": 12,
+          "tasaInteres": 15,
+          "nombreSolicitante": "Carlos Rodríguez",
+          "ingresosMensuales": 500000,
+          "fechaSolicitud": "2023-04-10 H/M/S 10:30:00",
+          "aprobado": true,
+          "cuotasPagadas": 3
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "numeroCuenta": "456789123-4",
+      "titular": "Ana Martínez",
+      "saldo": 7500000,
+      "movimientos": [
+        {
+          "tipo": "Depósito",
+          "cantidad": 3000000,
+          "fecha": "2023-06-20 H/M/S 09:15:00"
+        },
+        {
+          "tipo": "Retiro",
+          "cantidad": 500000,
+          "fecha": "2023-06-21 H/M/S 14:30:00"
+        }
+      ],
+      "prestamos": []
+    },
+    {
+      "id": 5,
+      "numeroCuenta": "567891234-5",
+      "titular": "Luis Fernández",
+      "saldo": 3000000,
+      "movimientos": [],
+      "prestamos": [
+        {
+          "monto": 2000000,
+          "cuotas": 24,
+          "tasaInteres": 18,
+          "nombreSolicitante": "Luis Fernández",
+          "ingresosMensuales": 700000,
+          "fechaSolicitud": "2023-03-05 H/M/S 16:45:00",
+          "aprobado": true,
+          "cuotasPagadas": 6
+        }
+      ]
+    }
+  ]
+}
