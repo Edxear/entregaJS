@@ -169,6 +169,8 @@ class InterfazBancaria {
         this.nombreSolicitanteInput = document.getElementById('nombre-solicitante');
         this.ingresosMensualesInput = document.getElementById('ingresos-mensuales');
         this.solicitarPrestamoBtn = document.getElementById('solicitar-prestamo-btn');
+        this.toggleDataBtn = document.getElementById('toggle-data-btn');
+this.isDataHidden = false;
     }
 
     initEventListeners() {
@@ -177,6 +179,7 @@ class InterfazBancaria {
 
         this.simularPrestamoBtn.addEventListener('click', () => this.simularPrestamo());
         this.solicitarPrestamoBtn.addEventListener('click', () => this.solicitarPrestamo());
+        this.toggleDataBtn.addEventListener('click', () => this.toggleAccountData());
     }
 
     updateAccountInfo() {
@@ -184,6 +187,27 @@ class InterfazBancaria {
         this.numeroCuentaElement.textContent = `N° Cuenta: ${this.cuenta.numeroCuenta}`;
         this.saldoElement.textContent = `Saldo: $${this.cuenta.saldo.toLocaleString('es-AR')}`;
     }
+
+    toggleAccountData() {
+    this.isDataHidden = !this.isDataHidden;
+    
+    const accountInfo = document.querySelector('.account-info');
+    const eyeIcon = this.toggleDataBtn.querySelector('.eye-icon');
+    
+    if (this.isDataHidden) {
+        accountInfo.classList.add('hidden');
+        this.toggleDataBtn.innerHTML = '<span class="eye-icon">👁️</span> Mostrar Datos';
+        
+       
+        localStorage.setItem('hideAccountData', 'true');
+    } else {
+        accountInfo.classList.remove('hidden');
+        this.toggleDataBtn.innerHTML = '<span class="eye-icon">👁️</span> Ocultar Datos';
+        
+       
+        localStorage.setItem('hideAccountData', 'false');
+    }
+}
 
     showToast(message, type = 'info') {
         const background = {
@@ -472,12 +496,10 @@ class InterfazBancaria {
 }
 
 function iniciarAplicacion() {
-    
     particlesJS.load('particles-js', 'particlesjs-config.json', function() {
         console.log('Particles.js config loaded');
     });
 
-    
     let cuenta = CuentaBancaria.cargarDesdeLocalStorage();
 
     if (!cuenta) {
@@ -485,7 +507,13 @@ function iniciarAplicacion() {
         cuenta.guardarEnLocalStorage();
     }
 
-    new InterfazBancaria(cuenta);
+    const interfaz = new InterfazBancaria(cuenta);
+    
+
+    const hideData = localStorage.getItem('hideAccountData') === 'true';
+    if (hideData) {
+        interfaz.toggleAccountData(); 
+    }
 }
 
 document.addEventListener('DOMContentLoaded', iniciarAplicacion);
