@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador Bancario</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -14,7 +15,7 @@
     <div class="container">
         <header class="header">
             <h1>Banco Gchu</h1>
-            <div class="account-info">
+            <div data-aos="fade-up" data-aos-duration="3000" class="account-info">
                 <p id="titular"></p>
                 <p id="numero-cuenta"></p>
                 <p id="saldo"></p>
@@ -24,7 +25,7 @@
         <main class="main-content">
             <div class="operations">
                 <h2>Operaciones</h2>
-                <div class="operation-buttons">
+                <div data-aos="fade-up" data-aos-duration="1500" class="operation-buttons">
                     <a href="#deposito-container" class="btn">Depositar</a>
                     <a href="#retiro-container" class="btn">Retirar</a>
                     <a href="#movimientos-container" class="btn">Ver Movimientos</a>
@@ -32,24 +33,24 @@
                 </div>
             </div>
 
-            <div class="operation-form" id="deposito-container">
+            <div data-aos="fade-up" data-aos-duration="1500" class="operation-form" id="deposito-container">
                 <h3>Depositar Dinero</h3>
                 <input type="number" id="deposito-cantidad" placeholder="Ingrese cantidad">
                 <button id="confirmar-deposito-btn" class="btn">Confirmar Depósito</button>
             </div>
 
-            <div class="operation-form" id="retiro-container">
+            <div  data-aos="fade-up" data-aos-duration="1500" class="operation-form" id="retiro-container">
                 <h3>Retirar Dinero</h3>
                 <input type="number" id="retiro-cantidad" placeholder="Ingrese cantidad">
                 <button id="confirmar-retiro-btn" class="btn">Confirmar Retiro</button>
             </div>
 
-            <div class="movimientos-container" id="movimientos-container">
+            <div data-aos="fade-up" data-aos-duration="1500" class="movimientos-container" id="movimientos-container">
                 <h3>Historial de Movimientos</h3>
                 <div id="movimientos-list"></div>
             </div>
 
-            <div class="prestamo-container" id="prestamo-container">
+            <div data-aos="zoom-out" class="prestamo-container" id="prestamo-container">
                 <h3>Solicitud de Préstamo</h3>
 
                 <div class="prestamo-form">
@@ -103,8 +104,13 @@
 
         <div class="messages" id="messages"></div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <script src="script.js"></script>
 </body>
 
